@@ -12,7 +12,9 @@ class Wordlist():  # pylint:disable=too-many-public-methods
     @staticmethod
     def config_path() -> str:
         '''Return path to configuration directory ~/.config/opentaal and create
-        that directory if it doesn't exist yet.'''
+        that directory if it doesn't exist yet.
+
+        :return: String with path to configuration directory.'''
         path = join(Path.home(), '.config', 'opentaal')
         Path(path).mkdir(parents=True, exist_ok=True)
         return path
