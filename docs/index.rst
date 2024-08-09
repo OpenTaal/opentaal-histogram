@@ -12,6 +12,7 @@ For example usage, please see the unit tests in the :code:`tests` directory.
    character
    checker
    database
+   extractor
    histogram
    isocode
    mark

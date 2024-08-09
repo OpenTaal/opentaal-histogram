@@ -1,4 +1,4 @@
-'''Test class Histogram.'''
+"""Test class Histogram."""
 
 from random import randint, seed  # , random
 from os import chdir, getcwd

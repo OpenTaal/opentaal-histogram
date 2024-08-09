@@ -1,34 +1,38 @@
-'''Class definition for Database.'''
+"""Class definition for Database."""
 
 from os.path import isabs, isfile, join, realpath
 from os import getcwd
 
 
 class Database():  # pylint:disable=too-few-public-methods
-    '''Class for using databases.'''
+    """Class for using databases."""
 
 # pylint:disable=unspecified-encoding,consider-using-with,too-many-branches
 
     @staticmethod
     def credentials(filename: str, parent: bool = False) -> dict:
-        '''Get database credentials from configuration file. The file format is
-        supported by at least MySQL and MariaDB clients, in e.g. shell scripts,
-        with --defaults-extra-file. See also:
+        """Get database credentials from configuration file.
 
-          - https://dev.mysql.com/doc/refman/8.0/en/option-file-options.html
-          - https://dev.mysql.com/doc/refman/8.0/en/option-files.html
-          - https://mariadb.com/kb/en/mariadbd-options/#-defaults-extra-file
-          - https://mariadb.com/kb/en/configuring-mariadb-with-option-files/
+        The file format is supported by at least MySQL and MariaDB clients, in
+        e.g. shell scripts, with --defaults-extra-file.
 
         Search paths are in this order:
 
-          1. absolute path
-          2. relative path to the current working directory (or its parent)
-          3. relative path to /usr/local/etc/
+        1. absolute path
+        2. relative path to the current working directory (or its parent)
+        3. relative path to /usr/local/etc/
 
         :param filename: The filename of the configuration file.
         :param parent: Search parent of the current working directory instead.
-        :return: A dictionary with the key values from the file.'''
+        :return: A dictionary with the key values from the file.
+
+        See Also
+        --------
+        - https://dev.mysql.com/doc/refman/8.0/en/option-file-options.html
+        - https://dev.mysql.com/doc/refman/8.0/en/option-files.html
+        - https://mariadb.com/kb/en/mariadbd-options/#-defaults-extra-file
+        - https://mariadb.com/kb/en/configuring-mariadb-with-option-files/
+        """
         # cnf = None
         if isabs(filename):
             cnf = open(filename)

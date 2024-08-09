@@ -1,4 +1,4 @@
-'''Debug Pytest in IDE.'''
+"""Debug Pytest in IDE."""
 
 from pdb import set_trace
 from pytest import main

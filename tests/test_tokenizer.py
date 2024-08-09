@@ -1,4 +1,4 @@
-'''Test class Tokenizer.'''
+"""Test class Tokenizer."""
 
 from pytest import fixture
 

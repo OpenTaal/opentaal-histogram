@@ -1,4 +1,4 @@
-'''Test class Isocode.'''
+"""Test class Isocode."""
 
 # pylint:disable=missing-function-docstring
 

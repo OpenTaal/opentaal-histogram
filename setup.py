@@ -1,9 +1,7 @@
-'''
-OpenTaal Histogram
-------------------
+"""Setup for OpenTaal Histogram.
 
 Python package by OpenTaal for efficiently processing Dutch texts.
-'''
+"""
 from setuptools import setup
 
 setup(

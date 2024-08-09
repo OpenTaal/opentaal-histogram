@@ -1,4 +1,4 @@
-'''Class definition for Sorter.'''
+"""Class definition for Sorter."""
 
 from locale import setlocale, LC_ALL, Error, strxfrm
 from re import compile, sub  # pylint:disable=redefined-builtin
@@ -8,13 +8,13 @@ from typing import Tuple
 
 
 class Sorter():
-    '''Class for sorting words.'''
+    """Class for sorting words."""
 
     key = None
 
     @classmethod
     def initialize(cls):  # TODO __init__?
-        '''TODO.'''
+        """TODO."""
         if cls.key is not None:
             return
         try:
@@ -69,7 +69,7 @@ class Sorter():
 
     @staticmethod
     def exact_conversion() -> Tuple[dict, dict]:
-        '''Do TODO.'''
+        """Do TODO."""
         substitute = {}
         restore = {}
         for char, replacement in Sorter.CONVERSIONS.items():
@@ -83,12 +83,13 @@ class Sorter():
     def sort(text: str | tuple[str] | list[str] | set[str],
              reverse: bool = False,
              retro: bool = False) -> str | list[str]:
-        '''Sort multiline text with non-empty lines.
+        """Sort multiline text with non-empty lines.
 
         :param text: The text to sort as list of strings or multiline string.
         :param reverse: Sort descending when True.
         :param retro: Sort retrograde when True.
-        :return: Sorted text.'''
+        :return: Sorted text.
+        """
         Sorter.initialize()
         lines = []
         if isinstance(text, str):
@@ -126,12 +127,13 @@ class Sorter():
     @staticmethod
     def sort_exact(text: str | tuple[str] | list[str] | set[str],
                    reverse=False, retro=False) -> str | list[str]:
-        '''Exact sort multiline text with non-empty lines.
+        """Exact sort multiline text with non-empty lines.
 
         :param text: The text to sort as list of strings or multiline string.
         :param reverse: Sort descending when True.
         :param retro: Sort retrograde when True.
-        :return: Sorted text.'''
+        :return: Sorted text.
+        """
         Sorter.initialize()
         substitute, restore = Sorter.exact_conversion()
         forbidden = set()

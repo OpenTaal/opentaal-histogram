@@ -1,4 +1,4 @@
-'''Test class Wordlist.'''
+"""Test class Wordlist."""
 
 # pylint:disable=missing-function-docstring
 

@@ -1,4 +1,4 @@
-'''Test class Character.'''
+"""Test class Character."""
 
 from unicodedata import category
 from pytest import raises
@@ -30,7 +30,7 @@ def test_decode():
 
 
 def test_to_hex():
-    '''Test the class Character.'''
+    """Test the class Character."""
     assert Character.to_hex('k') == 'U+6B'
     assert Character.to_hex('k', prefix=False) == '6B'
     assert Character.to_hex('k', prefix=False, upper=False) == '6b'
@@ -38,7 +38,7 @@ def test_to_hex():
 
 
 def test_is_letter():
-    '''Test the class Character.'''
+    """Test the class Character."""
     # TODO replace with standard lib method? Test and compare.
     assert Character.is_letter('LC') is True
     assert Character.is_letter('Ll') is True
@@ -49,7 +49,7 @@ def test_is_letter():
 
 
 def test_is_letternumeral():
-    '''Test the class Character.'''
+    """Test the class Character."""
     # TODO replace with standard lib method? Test and compare.
     assert Character.is_letternumeral(category('a')) is True
     assert Character.is_letternumeral(category('2')) is True

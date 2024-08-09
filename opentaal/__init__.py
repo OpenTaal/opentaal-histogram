@@ -1,9 +1,10 @@
-'''Initialize module.'''
+"""Initialize module."""
 
 __all__ = [
     'Character',
     'Checker',
     'Database',
+    'Extractor',
     'Histogram',
     'Isocode',
     'Mark',
@@ -15,6 +16,7 @@ __all__ = [
 
 from .character import Character
 from .database import Database
+from .extractor import Extractor
 from .mark import Mark
 from .sorter import Sorter
 from .tokenizer import Tokenizer

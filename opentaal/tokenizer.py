@@ -1,24 +1,26 @@
-'''Class definition for Tokenizer.'''
+"""Class definition for Tokenizer."""
 
 import ucto
 
 
 class Tokenizer():
-    '''Class for tokenizing Dutch texts.'''
+    """Class for tokenizing Dutch texts."""
 
     def __init__(self, config: str = 'tokconfig-nld',
                  quotes: bool = True) -> None:
-        '''TODO.
+        """TODO.
 
         :param text: TODO
-        :return: TODO'''
+        :return: TODO
+        """
         self.tokenizer = ucto.Tokenizer(config, quotedetection=quotes)
 
     def text_to_words(self, text: str) -> list[str]:
-        '''TODO.
+        """TODO.
 
         :param text: TODO
-        :param spaces: TODO'''
+        :param spaces: TODO
+        """
         self.tokenizer.process(text)
         res = []
         for token in self.tokenizer:
@@ -26,10 +28,11 @@ class Tokenizer():
         return res
 
     def text_to_spaced_words(self, text: str) -> list[str]:
-        '''TODO.
+        """TODO.
 
         :param text: TODO
-        :return: TODO'''
+        :return: TODO
+        """
         self.tokenizer.process(text)
         res = []
         for token in self.tokenizer:
@@ -39,10 +42,11 @@ class Tokenizer():
         return res[:-1]
 
     def text_to_sentences_with_words(self, text: str) -> list[list[str]]:
-        '''TODO.
+        """TODO.
 
         :param text: TODO
-        :return: TODO'''
+        :return: TODO
+        """
         self.tokenizer.process(text)
         res = []
         sentence = []
@@ -55,10 +59,11 @@ class Tokenizer():
 
     def text_to_sentences_with_spaced_words(self,
                                             text: str) -> list[list[str]]:
-        '''TODO.
+        """TODO.
 
         :param text: TODO
-        :return: TODO'''
+        :return: TODO
+        """
         self.tokenizer.process(text)
         res = []
         sentence = []

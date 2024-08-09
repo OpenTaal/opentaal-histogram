@@ -8,7 +8,7 @@
 
 project = 'OpenTaal Python'
 copyright = '<a href="https://opentaal.org/">Stichting OpenTaal</a>'
-#author = 'Stichting OpenTaal'
+author = 'Stichting OpenTaal'
 version = '0.1'
 release = '0.1.0'
 

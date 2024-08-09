@@ -1,4 +1,4 @@
-'''Test class Word.'''
+"""Test class Word."""
 
 # from os.path import isfile
 # from requests.exceptions import HTTPError

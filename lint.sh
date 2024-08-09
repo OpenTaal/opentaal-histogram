@@ -4,6 +4,8 @@ echo '* CHECKBASHISMS'
 checkbashisms *.sh
 
 FILES='opentaal tests debug_pytest.py'
+echo '*PYDOCSTYLE'
+pydocstyle --convention=numpy $FILES
 echo '* FLAKE8'
 # --ignore E252
 flake8 $FILES
@@ -16,4 +18,3 @@ pyflakes $FILES
 echo '* MYPY'
 # --implicit-optional
 mypy --ignore-missing-imports --implicit-optional $FILES
-

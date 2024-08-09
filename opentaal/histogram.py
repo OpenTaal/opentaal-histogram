@@ -1,4 +1,4 @@
-'''Class definition for Histogram.'''
+"""Class definition for Histogram."""
 
 from operator import itemgetter
 from sys import maxsize
@@ -12,19 +12,25 @@ from opentaal import Character
 
 
 class Histogram():
-    '''Class for creating histograms. See also
-    https://en.wikipedia.org/wiki/Histogram .'''
+    """Class for creating histograms.
+
+    See Also
+    --------
+    - https://en.wikipedia.org/wiki/Histogram
+    - https://pypi.org/project/py-gnuplot/
+    """
 
     def __init__(self, desc: str,
                  filename: str = None,
                  chars: bool = True) -> None:
-        '''Construct object and set its description.
+        """Construct object and set its description.
 
         :param desc: The description of the histogram.
         :param desc: The filename of text file to process.
         :param chars: Process characters or words. This parameters is
         irrelevant when adding bool, int or float.
-        :return: Constructed object.'''
+        :return: Constructed object.
+        """
         # TODO Support bin size for int and float
         self.desc = desc
         self.chars = chars
@@ -42,30 +48,32 @@ class Histogram():
                         self.add(line)
 
     def size(self) -> int:
-        '''Return the number of unique values, also known as bins.'''
+        """Return the number of unique values, also known as bins."""
         return len(self.data)
 
     def get(self, value) -> int:
-        '''Return the TODO number of unique values, also known as bins.
+        """Return the TODO number of unique values, also known as bins.
 
         :param desc: TODOFilename of text file to process.
-        :return: TODOConstructed object.'''
+        :return: TODOConstructed object.
+        """
         if value in self.data:
             return self.data[value]
         return 0
 
     def maximum(self) -> int:
-        '''Return the maximum count.'''
+        """Return the maximum count."""
         return self.max
 
     def add(self, value) -> None:
-        '''Add a value by increasing its count in the histogram. If Histogram
-        object was constructed character-based (chars=True), when a word is
-        added, all characters will be added seperately. Do not mix adding
-        different types.
+        """Add a value by increasing its count in the histogram.
 
-        :param value: The value to increase its count of by one. Can be str,
-        bool, int or float.'''
+        If Histogram object was constructed character-based (chars=True), when
+        a word is added, all characters will be added seperately. Do not mix
+        adding different types.
+
+        :param value: The str, bool, int or float to incrment its count by one.
+        """
         if value in ('', None):
             raise ValueError('Cannot add empty string or None to'
                              f' "{self.desc}".')
@@ -93,7 +101,7 @@ class Histogram():
                   unicode: bool = True,
                   abbrev: bool = True,
                   multi: bool = True) -> str:
-        '''Write the description and sorted histogram counts to a string.
+        """Write the description and sorted histogram counts to a string.
 
         :param desc: Include description.
         :param head: Include header.
@@ -101,12 +109,13 @@ class Histogram():
         :param unicode: TODO.
         :param abbrev: TODO.
         :param multi: TODO.
-        :return: The description and histogram.'''
+        :return: The description and histogram.
+        """
         return self.to_tsvstring(desc=desc, head=head, reverse=reverse,
                                  unicode=unicode, abbrev=abbrev,
                                  multi=multi)[0]
 
-# pylint:disable=too-many-branches
+# pylint:disable=too-many-branches,consider-using-min-builtin
 
     def to_tsvstring(self, desc: bool = True,
                      head: bool = True,
@@ -114,8 +123,7 @@ class Histogram():
                      unicode: bool = True,
                      abbrev: bool = True,
                      multi: bool = True) -> tuple[str, int, int]:
-        '''Write the description and sorted histogram counts to a tab-separated
-        string. See also https://en.wikipedia.org/wiki/Tab-separated_values .
+        """Write the description and sorted histogram counts to a TSV string.
 
         :param desc: Include description.
         :param head: Include header.
@@ -123,7 +131,12 @@ class Histogram():
         :param unicode: TODO.
         :param abbrev: TODO.
         :param multi: TODO.
-        :return: The description and histogram.'''
+        :return: The description and histogram.
+
+        See Also
+        --------
+        - https://en.wikipedia.org/wiki/Tab-separated_values .
+        """
         if len(self.data) == 0:
             raise ValueError(f'Cannot process "{self.desc}" because no values'
                              ' have been added.')
@@ -174,14 +187,18 @@ class Histogram():
 
     def to_mdstring(self, desc: bool = True, reverse: bool = True,
                     unicode: bool = True, multi: bool = True) -> str:
-        '''Write the description and sorted histogram counts to a MarkDown
-        string. See also https://en.wikipedia.org/wiki/Markdown .
+        """Write the description and sorted histogram counts to a MD string.
 
         :param desc: Include description.
         :param reverse: Reverse the counts, starting with the highest first.
         :param unicode: TODO.
         :param multi: TODO.
-        :return: The description and histogram.'''
+        :return: The description and histogram.
+
+        See Also
+        --------
+        - https://en.wikipedia.org/wiki/Markdown
+        """
         if len(self.data) == 0:
             raise ValueError(f'Cannot process "{self.desc}" because no values'
                              ' have been added.')
@@ -226,14 +243,18 @@ class Histogram():
 
     def to_jsonstring(self, desc: bool = True, reverse: bool = True,
                       unicode: bool = True, multi: bool = True) -> str:
-        '''Write the description and sorted histogram counts to a JSON string.
-        See also https://en.wikipedia.org/wiki/JSON .
+        """Write the description and sorted histogram counts to a JSON string.
 
         :param desc: Include description.
         :param reverse: Reverse the counts, starting with the highest first.
         :param unicode: TODO.
         :param multi: TODO.
-        :return: The description and histogram.'''
+        :return: The description and histogram.
+
+        See Also
+        --------
+        - https://en.wikipedia.org/wiki/JSON
+        """
         if len(self.data) == 0:
             raise ValueError(f'Cannot process "{self.desc}" because no values'
                              ' have been added.')
@@ -285,17 +306,20 @@ class Histogram():
         res = f'{res}}}\n'
         return res
 
+# pylint:enable=consider-using-min-builtin
+
     def to_tsvfile(self, filename: str, head: bool = True,
                    reverse: bool = True, unicode: bool = True,
                    multi: bool = True) -> tuple[int, int]:
-        '''Write the description and sorted histogram to an SVG file.
+        """Write the description and sorted histogram to an SVG file.
 
         :param filename: The filename to write to.
         :param head: TODO
         :param reverse: TODO
         :param unicode: TODO
         :param multi: TODO
-        :return: TODO'''
+        :return: TODO
+        """
         res = self.to_tsvstring(desc=False, head=head, reverse=reverse,
                                 unicode=unicode, multi=multi)
         with open(filename, 'w') as file:
@@ -304,14 +328,15 @@ class Histogram():
 
     def to_mdfile(self, filename: str, desc: bool = True, reverse: bool = True,
                   unicode: bool = True, multi: bool = True) -> None:
-        '''Write the description and sorted histogram to a MarkDown file.
+        """Write the description and sorted histogram to a MarkDown file.
 
         :param filename: The filename to write to.
         :param desc: TODO
         :param reverse: TODO
         :param unicode: TODO
         :param multi: TODO
-        :return: TODO'''
+        :return: TODO
+        """
         with open(filename, 'w') as file:
             file.write(self.to_mdstring(desc=desc, reverse=reverse,
                                         unicode=unicode, multi=multi))
@@ -321,9 +346,10 @@ class Histogram():
                     reverse: bool = True,
                     unicode: bool = True,
                     multi: bool = True) -> None:
-        '''Write the description and sorted histogram to a JSON file.
+        """Write the description and sorted histogram to a JSON file.
 
-        :param filename: The filename to write to.'''
+        :param filename: The filename to write to.
+        """
         with open(filename, 'w') as file:
             file.write(self.to_jsonstring(desc=desc, reverse=reverse,
                                           unicode=unicode, multi=multi))
@@ -335,15 +361,17 @@ class Histogram():
         # TODO transparent background
         # TODO y axis from 0 as option def
         # TODO xlabel angle
-        '''Write the description and sorted histogram as a graph to a PNG or
-        SVG file. Note: for an optimal result, run e.g. optipng or scour on the
-        result.
+        """Write the description and sorted histogram as a graph to a file.
+
+        File format is PNG or SVG file. Note: for an optimal result, run e.g.
+        optipng or scour on the result.
 
         :param filename: The filename to write to.
         :param filename: The image width.
         :param filename: The image height.
         :param filename: The font to use.
-        :param term: The Gnuplot terminal to use such as 'png' and 'svg'.'''
+        :param term: The Gnuplot terminal to use such as 'png' and 'svg'.
+        """
         # TODO refactor with guplot columns
         datafilename = f'{filename}.tsv'
         res = self.to_tsvfile(datafilename, head=False, reverse=reverse,

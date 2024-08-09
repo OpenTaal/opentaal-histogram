@@ -1,4 +1,4 @@
-'''Test class Checker.'''
+"""Test class Checker."""
 
 from pytest import fixture
 

@@ -1,17 +1,18 @@
-'''Class definition for Character.'''
+"""Class definition for Character."""
 
 from unicodedata import name
 
 
 class Character():
-    '''Class for processing characters.'''
+    """Class for processing characters."""
 
     @staticmethod
     def get_name(char: str, pretty: bool = False) -> str:
-        '''Get Unicode name for character.
+        """Get Unicode name for character.
 
         :param char: The character for which to get the Unicode name.
-        :param pretty: Pretty print in lower case except for names.'''
+        :param pretty: Pretty print in lower case except for names.
+        """
         if pretty:
             return name(char).lower().replace('latin ', 'Latin ')
         return name(char)
@@ -20,11 +21,12 @@ class Character():
 
     @staticmethod
     def decode_category(code: str, abbrev: bool = True) -> str:
-        '''Decode Unicode category code from unicode.category().
+        """Decode Unicode category code from unicode.category().
 
         :param code: The two-letter category code.
         :param abbrev: Return abbreveated category seven characters or less.
-        :return: The category name.'''
+        :return: The category name.
+        """
         first = code[0]
         if first == 'C':
             return 'control'
@@ -50,11 +52,13 @@ class Character():
 
     @staticmethod
     def is_letter(code: str) -> bool:
-        '''Test if a Unicode category from unicode.category() code relates to a
-        letter.
+        """Test if a Unicode category code relates to a letter.
+
+        Note that category code is from unicode.category().
 
         :param code: The two-character category code.
-        :return: True is the category relates to a letter.'''
+        :return: True is the category relates to a letter.
+        """
         # TODO https://docs.python.org/3/library/stdtypes.html#str.isalpha
         if code in ('LC', 'Ll', 'Lo', 'Lu'):  # excluding Lm: Letter. Modifier
             return True
@@ -62,11 +66,13 @@ class Character():
 
     @staticmethod
     def is_letternumeral(code: str) -> bool:
-        '''Test if a Unicode category from unicode.category() code relates to a
-        letter or a numeral.
+        """Test if a Unicode category code relates to a letter or a numeral.
+
+        Note that category code is from unicode.category().
 
         :param code: The two-character category code.
-        :return: True is the category relates to a letter or numeral.'''
+        :return: True is the category relates to a letter or numeral.
+        """
         # TODO https://docs.python.org/3/library/stdtypes.html#str.isalpha
         if code in ('LC', 'Ll', 'Lo', 'Lu', 'Nd'):
             # excluding Lm: Letter. Modifier
@@ -75,10 +81,11 @@ class Character():
 
     @staticmethod
     def to_hex(character: str, prefix: bool = True, upper: bool = True) -> str:
-        '''Convert Unicode character to its hexidecimal representation.
+        """Convert Unicode character to its hexidecimal representation.
 
         :param character: The character to convert.
-        :return: Unicode codepoint in hexidecimal representation.'''
+        :return: Unicode codepoint in hexidecimal representation.
+        """
         tmp = character.encode('utf-8').hex()
         if upper:
             tmp = tmp.upper()
@@ -88,12 +95,16 @@ class Character():
 
     @staticmethod
     def print_friendly(char: str) -> str:  # , markdown=False
-        '''Make character print friendly. See also
-        https://en.wikipedia.org/wiki/Whitespace_character and
-        https://en.wikipedia.org/wiki/Non-breaking_space .
+        """Make character print friendly.
 
         :param char: The character to make print friendly.
-        :return: Print friendly version of the supplied character.'''
+        :return: Print friendly version of the supplied character.
+
+        See Also
+        --------
+        - https://en.wikipedia.org/wiki/Whitespace_character
+        - https://en.wikipedia.org/wiki/Non-breaking_space
+        """
         if char == '\t':  # U+0009 tab character
             return '↹'
         if char == '\n':  # U+000A? new line character
@@ -126,12 +137,16 @@ class Character():
 
     @staticmethod
     def print_friendly_string(text: str) -> str:  # , markdown=False
-        '''Make string print friendly. See also
-        https://en.wikipedia.org/wiki/Whitespace_character and
-        https://en.wikipedia.org/wiki/Non-breaking_space .
+        """Make string print friendly.
 
         :param text: The text to make print friendly.
-        :return: Print friendly version of the supplied text.'''
+        :return: Print friendly version of the supplied text.
+
+        See Also
+        --------
+        - https://en.wikipedia.org/wiki/Whitespace_character
+        - https://en.wikipedia.org/wiki/Non-breaking_space
+        """
         replacements = {
             '\t': '↹',  # U+0009 tab character
             '\n': '⏎',  # U+000A? new line character

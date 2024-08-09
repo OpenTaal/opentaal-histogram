@@ -73,3 +73,17 @@ Generate API documentation and view it in HTML with
 - publish on PyPI
 
 Donating is also possible with <noscript><a href="https://liberapay.com/opentaal/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a></noscript>
+
+
+
+
+https://github.com/Alir3z4/html2text/blob/master/html2text/__init__.py
+
+https://github.com/Alir3z4/html2text/blob/master/html2text/cli.py
+
+https://github.com/Alir3z4/html2text/blob/master/html2text/config.py
+
+https://github.com/Alir3z4/html2text/blob/master/docs/usage.md
+
+
+https://pypi.org/project/beautifulsoup4/

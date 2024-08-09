@@ -1,4 +1,5 @@
+html2text
 hunspell
 gtts
-py_gnuplot
+py-gnuplot
 python-ucto

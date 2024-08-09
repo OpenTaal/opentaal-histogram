@@ -1,4 +1,4 @@
-'''Test class Mark.'''
+"""Test class Mark."""
 
 from opentaal import Mark
 
