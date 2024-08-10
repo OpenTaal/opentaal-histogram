@@ -531,15 +531,15 @@ def test_extractor(extractor, tmp_path: str):
     chdir(original)
 
 
-def test_extractor_override(extractor_override, path):
+def test_extractor_override(extractor_override, tmp_path):
     original = getcwd()
     if getcwd().endswith('/tests'):
         chdir('..')
-    out = f'{path[:-4]}txt'
-    assert extractor_override.extract(path)
+    out = f'{tmp_path[:-4]}txt'
+    assert extractor_override.extract(tmp_path)
     assert isfile(out)
     first = getmtime(out)
-    assert extractor_override.extract(path)
+    assert extractor_override.extract(tmp_path)
     assert isfile(out)
     assert getmtime(out) != first
     remove(out)

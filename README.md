@@ -87,3 +87,7 @@ https://github.com/Alir3z4/html2text/blob/master/docs/usage.md
 
 
 https://pypi.org/project/beautifulsoup4/
+
+## Versioning
+
+Update the version number in both `setup.py` and in `docs/conf.py`.

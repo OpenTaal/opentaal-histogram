@@ -6,7 +6,7 @@ from setuptools import setup
 
 setup(
     name='OpenTaal',
-    version='0.1.0',
+    version='0.1.1',
     url='https://github.com/opentaal/opentaal-python',
     project_urls={
         'Documentation': 'https://bootstrap-flask.readthedocs.io/en/stable/',
