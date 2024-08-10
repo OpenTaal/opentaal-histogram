@@ -2,6 +2,3 @@ word module
 ===========
 
 .. automodule:: word
-   :members:
-   :undoc-members:
-   :show-inheritance:

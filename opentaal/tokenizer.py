@@ -13,7 +13,7 @@ class Tokenizer():
         :param text: TODO
         :return: TODO
         """
-        self.tokenizer = ucto.Tokenizer(config, quotedetection=quotes)
+        self.__tokenizer = ucto.Tokenizer(config, quotedetection=quotes)
 
     def text_to_words(self, text: str) -> list[str]:
         """TODO.
@@ -21,9 +21,9 @@ class Tokenizer():
         :param text: TODO
         :param spaces: TODO
         """
-        self.tokenizer.process(text)
+        self.__tokenizer.process(text)
         res = []
-        for token in self.tokenizer:
+        for token in self.__tokenizer:
             res.append(str(token))
         return res
 
@@ -33,9 +33,9 @@ class Tokenizer():
         :param text: TODO
         :return: TODO
         """
-        self.tokenizer.process(text)
+        self.__tokenizer.process(text)
         res = []
-        for token in self.tokenizer:
+        for token in self.__tokenizer:
             res.append(str(token))
             if not token.nospace():
                 res.append(' ')
@@ -47,10 +47,10 @@ class Tokenizer():
         :param text: TODO
         :return: TODO
         """
-        self.tokenizer.process(text)
+        self.__tokenizer.process(text)
         res = []
         sentence = []
-        for token in self.tokenizer:
+        for token in self.__tokenizer:
             sentence.append(str(token))
             if token.isendofsentence():
                 res.append(sentence)
@@ -64,10 +64,10 @@ class Tokenizer():
         :param text: TODO
         :return: TODO
         """
-        self.tokenizer.process(text)
+        self.__tokenizer.process(text)
         res = []
         sentence = []
-        for token in self.tokenizer:
+        for token in self.__tokenizer:
             sentence.append(str(token))
             if token.isendofsentence():
                 res.append(sentence)

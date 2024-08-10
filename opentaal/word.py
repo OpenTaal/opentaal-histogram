@@ -38,10 +38,11 @@ class Word():
         return sha256(string.encode('utf8')).hexdigest()
 
     @staticmethod
-    def synthesize(string: str, path: str) -> None:
+    def synthesize(string: str, path: str) -> None:  # pragma: no cover
         """TODO.
 
         :param string: The text synthesize.
         :param path: The path to store the audio file.
         """
+        # TODO perhaps a special class withh also support for OpenAI TTS
         gTTS(string, lang='nl', tld='nl').save(path)

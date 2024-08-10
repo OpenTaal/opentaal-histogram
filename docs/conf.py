@@ -33,6 +33,14 @@ extensions = [
 # TODO https://www.sphinx-doc.org/en/master/usage/extensions/githubpages.html
 # TODO https://www.sphinx-doc.org/en/master/usage/extensions/graphviz.html
 
+autodoc_default_options = {
+    'members': True,
+    'undoc-members': True,
+    'special-members': True,
+#    'private-members': True,
+    'exclude-members': '__dict__, __module__, __weakref__',
+    'memvber-order': 'bysource',
+    'show-inheritance': True}
 autodoc_typehints = 'description'
 todo_include_todos = True
 
@@ -47,4 +55,3 @@ html_static_path = ['_static']
 html_title = 'for quickly processing Dutch texts'
 html_logo = 'logo.png'
 html_favicon = 'favicon.ico'
-

@@ -51,9 +51,13 @@ def one_float():
 # pylint:disable=redefined-outer-name
 
 
+def test_members(empty):
+    assert str(empty) == 'Empty'
+    assert repr(empty) == 'Empty chars=True len=0 min=0 max=0'
+    assert len(empty) == 0
+
+
 def test_empty_and_add_string(empty):
-    assert empty.desc == 'Empty'
-    assert empty.size() == 0
     with raises(ValueError, match='Cannot add empty string or None to'
                 ' "Empty".'):
         assert empty.add('')
@@ -87,11 +91,13 @@ def test_to_jsonstring_empty(empty):
 
 
 def test_to_string_one_char(one_char):
+    assert one_char.minimum() == 1
     assert one_char.to_string(unicode=False) == 'One char\ncount\tvalue' \
         '\n      1\tx\n'
 
 
 def test_to_string_one_word(one_word):
+    assert one_word.maximum() == 1
     assert one_word.to_string(unicode=False) == 'One word\ncount\tvalue' \
         '\n      1\tgoederentrein\n'
 
@@ -157,16 +163,24 @@ def test_init_file():
         file.write('boek\n')
         file.write('raam\n')
     hist = Histogram('Test from file', filename='tmp_hist.txt', chars=False)
-    assert hist.size() == 4
+    assert len(hist) == 4
     assert hist.get('tafel') == 2
     hist = Histogram('Test from file', filename='tmp_hist.txt')
-    assert hist.size() == 11
+    assert len(hist) == 11
     assert hist.get('a') == 4
     chdir(original)
-    assert hist.to_string(unicode=False, abbrev=False) != ''
-    assert hist.to_tsvstring(abbrev=False) != ''
-    assert hist.to_mdstring(unicode=False) != ''
-    assert hist.to_jsonstring(unicode=False) != ''
+
+    res = hist.to_string(unicode=False, abbrev=False)
+    assert res != ''
+    res = hist.to_tsvstring(abbrev=False)
+    assert res[0] != ''
+    assert res[1] == 1
+    assert res[2] == 4
+    res = hist.to_mdstring(unicode=False)
+    assert res != ''
+    res = hist.to_jsonstring(unicode=False)
+    assert res != ''
+
     hist.to_tsvfile('/tmp/test_from_file.tsv')
     hist.to_jsonfile('/tmp/test_from_file.json')
     hist.to_mdfile('/tmp/test_from_file.md', reverse=False)
@@ -179,7 +193,7 @@ def test_init_file():
 #     seed(2.71828)
 #     for _ in range(1024):
 #         hist.add(randint(1, 9))
-#     assert hist.size() == 9
+#     assert len(hist) == 9
 #     assert hist.get('a') == 0
 #     assert hist.to_string(unicode=False, abbrev=False) != ''
 #     assert hist.to_tsvstring(abbrev=False) != ''
@@ -197,7 +211,7 @@ def test_init_file():
 #     seed(2.71828)
 #     for _ in range(1024):
 #         hist.add(random())
-#     assert hist.size() == 1024
+#     assert len(hist) == 1024
 #     assert hist.get('a') == 0
 #     assert hist.to_string(unicode=False, abbrev=False) != ''
 #     assert hist.to_tsvstring(abbrev=False) != ''

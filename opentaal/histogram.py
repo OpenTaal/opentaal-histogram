@@ -1,7 +1,6 @@
 """Class definition for Histogram."""
 
 from operator import itemgetter
-from sys import maxsize
 from unicodedata import category
 
 from pygnuplot import gnuplot
@@ -26,16 +25,17 @@ class Histogram():
         """Construct object and set its description.
 
         :param desc: The description of the histogram.
-        :param desc: The filename of text file to process.
+        :param filename: The filename of text file to process.
         :param chars: Process characters or words. This parameters is
-        irrelevant when adding bool, int or float.
+            irrelevant when adding bool, int or float.
         :return: Constructed object.
         """
         # TODO Support bin size for int and float
-        self.desc = desc
-        self.chars = chars
-        self.data: dict[str, int] = {}
-        self.max = 0
+        self.__desc: str = desc
+        self.__chars: bool = chars
+        self.__data: dict[str, int] = {}
+        self.__min: int = 0
+        self.__max: int = 0
         if filename is not None:
             # TODO char or word
             with open(filename) as file:
@@ -46,10 +46,27 @@ class Histogram():
                             self.add(char)
                     else:
                         self.add(line)
+                self.__min = min(self.__data.values())
+                self.__max = max(self.__data.values())
 
-    def size(self) -> int:
+    def __len__(self) -> int:
         """Return the number of unique values, also known as bins."""
-        return len(self.data)
+        return len(self.__data)
+
+    def __str__(self) -> str:
+        """Return the description.
+
+        :return: The description and histogram.
+        """
+        return f'{self.__desc}'
+
+    def __repr__(self) -> str:
+        """Return the description and some details.
+
+        :return: The description and some details.
+        """
+        return f'{self.__desc} chars={self.__chars} len={len(self)}' \
+               f' min={self.minimum()} max={self.maximum()}'
 
     def get(self, value) -> int:
         """Return the TODO number of unique values, also known as bins.
@@ -57,13 +74,21 @@ class Histogram():
         :param desc: TODOFilename of text file to process.
         :return: TODOConstructed object.
         """
-        if value in self.data:
-            return self.data[value]
+        if value in self.__data:
+            return self.__data[value]
         return 0
+
+    def minimum(self) -> int:
+        """Return the minimum count."""
+        if len(self) and self.__min == 0:
+            self.__min = min(self.__data.values())
+        return self.__min
 
     def maximum(self) -> int:
         """Return the maximum count."""
-        return self.max
+        if len(self) and self.__max == 0:
+            self.__max = max(self.__data.values())
+        return self.__max
 
     def add(self, value) -> None:
         """Add a value by increasing its count in the histogram.
@@ -76,22 +101,18 @@ class Histogram():
         """
         if value in ('', None):
             raise ValueError('Cannot add empty string or None to'
-                             f' "{self.desc}".')
-        if not self.chars or isinstance(value, (bool, int, float)):
-            if value in self.data:
-                self.data[value] += 1
+                             f' "{self.__desc}".')
+        if not self.__chars or isinstance(value, (bool, int, float)):
+            if value in self.__data:
+                self.__data[value] += 1
             else:
-                self.data[value] = 1
-            if self.data[value] > self.max:
-                self.max = self.data[value]
+                self.__data[value] = 1
         else:
             for char in value:
-                if char in self.data:
-                    self.data[char] += 1
+                if char in self.__data:
+                    self.__data[char] += 1
                 else:
-                    self.data[char] = 1
-                if self.data[char] > self.max:
-                    self.max = self.data[char]
+                    self.__data[char] = 1
 
 # pylint:disable=too-many-arguments
 
@@ -115,7 +136,7 @@ class Histogram():
                                  unicode=unicode, abbrev=abbrev,
                                  multi=multi)[0]
 
-# pylint:disable=too-many-branches,consider-using-min-builtin
+# pylint:disable=too-many-branches
 
     def to_tsvstring(self, desc: bool = True,
                      head: bool = True,
@@ -131,18 +152,19 @@ class Histogram():
         :param unicode: TODO.
         :param abbrev: TODO.
         :param multi: TODO.
-        :return: The description and histogram.
+        :return: A tuple of string with the description and histogram, int with
+            minimum count and int with maximum count.
 
         See Also
         --------
         - https://en.wikipedia.org/wiki/Tab-separated_values .
         """
-        if len(self.data) == 0:
-            raise ValueError(f'Cannot process "{self.desc}" because no values'
-                             ' have been added.')
+        if len(self) == 0:
+            raise ValueError(f'Cannot process "{self.__desc}" because no'
+                             ' values have been added.')
         res = ''
         if desc:
-            res = f'{self.desc}\n'
+            res = f'{self.__desc}\n'
         if head:
             if unicode:
                 if abbrev:
@@ -152,16 +174,13 @@ class Histogram():
                           '\tdescription\n'
             else:
                 res = f'{res}count\tvalue\n'
-        minimum = maxsize
         if self.maximum() >= 10000000:
             raise ValueError('Unable to pad more than seven spaces at the'
                              ' moment')
         if unicode:
             # TODO secondary sort for words!
-            for value, count in sorted(self.data.items(), key=itemgetter(1),
+            for value, count in sorted(self.__data.items(), key=itemgetter(1),
                                        reverse=reverse):
-                if count < minimum:
-                    minimum = count
                 name = Character.get_name(value)
                 cat = Character.decode_category(code=category(value),
                                                 abbrev=abbrev)
@@ -178,12 +197,10 @@ class Histogram():
                 # perhaps hex(ord(value))
                 # right align
         else:
-            for value, count in sorted(self.data.items(), key=itemgetter(1),
+            for value, count in sorted(self.__data.items(), key=itemgetter(1),
                                        reverse=reverse):
-                if count < minimum:
-                    minimum = count
                 res = f'{res}{count: >7}\t{Character.print_friendly(value)}\n'
-        return res, minimum, self.maximum()
+        return res, self.minimum(), self.maximum()
 
     def to_mdstring(self, desc: bool = True, reverse: bool = True,
                     unicode: bool = True, multi: bool = True) -> str:
@@ -199,12 +216,12 @@ class Histogram():
         --------
         - https://en.wikipedia.org/wiki/Markdown
         """
-        if len(self.data) == 0:
-            raise ValueError(f'Cannot process "{self.desc}" because no values'
-                             ' have been added.')
+        if len(self) == 0:
+            raise ValueError(f'Cannot process "{self.__desc}" because no'
+                             ' values have been added.')
         res = ''
         if desc:
-            res = f'{self.desc}\n\n'
+            res = f'{self.__desc}\n\n'
         if unicode:
             if multi:
                 res = f'{res}count | character | codepoint | categegory |' \
@@ -218,7 +235,7 @@ class Histogram():
             res = f'{res}count | value\n'
             res = f'{res}--: | ---\n'
         if unicode:
-            for value, count in sorted(self.data.items(), key=itemgetter(1),
+            for value, count in sorted(self.__data.items(), key=itemgetter(1),
                                        reverse=reverse):
                 name = Character.get_name(value)
                 cat = Character.decode_category(code=category(value),
@@ -235,7 +252,7 @@ class Histogram():
                           f' `{hxa}` {cat} {name}\n'
                 # perhaps hex(ord(value))
         else:
-            for value, count in sorted(self.data.items(), key=itemgetter(1),
+            for value, count in sorted(self.__data.items(), key=itemgetter(1),
                                        reverse=reverse):
                 res = f'{res}`{count}` | `{Character.print_friendly(value)}`\n'
         return res
@@ -255,19 +272,16 @@ class Histogram():
         --------
         - https://en.wikipedia.org/wiki/JSON
         """
-        if len(self.data) == 0:
-            raise ValueError(f'Cannot process "{self.desc}" because no values'
-                             ' have been added.')
+        if len(self) == 0:
+            raise ValueError(f'Cannot process "{self.__desc}" because no'
+                             ' values have been added.')
         res = '{\n'
         if desc:
-            res = f'{res}  "description": "{self.desc}",\n'
+            res = f'{res}  "description": "{self.__desc}",\n'
         res = f'{res}  "data": [\n'
-        minimum = maxsize
         if unicode:
-            for value, count in sorted(self.data.items(), key=itemgetter(1),
+            for value, count in sorted(self.__data.items(), key=itemgetter(1),
                                        reverse=reverse):
-                if count < minimum:
-                    minimum = count
                 name = Character.get_name(value)
                 cat = Character.decode_category(code=category(value),
                                                 abbrev=False)
@@ -289,10 +303,8 @@ class Histogram():
                           '    },\n'
                 # perhaps hex(ord(value))
         else:
-            for value, count in sorted(self.data.items(), key=itemgetter(1),
+            for value, count in sorted(self.__data.items(), key=itemgetter(1),
                                        reverse=reverse):
-                if count < minimum:
-                    minimum = count
                 esc = Character.print_friendly(value)
                 res = f'{res}    {{\n' \
                       f'      "count": {count},\n' \
@@ -300,13 +312,11 @@ class Histogram():
                       '    },\n'
         res = f'{res[:-2]}\n'
         res = f'{res}  ],\n'
-        res = f'{res}  "unique": {len(self.data)},\n'
-        res = f'{res}  "minimum": {minimum},\n'
+        res = f'{res}  "unique": {len(self)},\n'
+        res = f'{res}  "minimum": {self.minimum()},\n'
         res = f'{res}  "maximum": {self.maximum()}\n'
         res = f'{res}}}\n'
         return res
-
-# pylint:enable=consider-using-min-builtin
 
     def to_tsvfile(self, filename: str, head: bool = True,
                    reverse: bool = True, unicode: bool = True,
@@ -384,10 +394,10 @@ class Histogram():
             style.append('fill pattern 5')
         else:
             style.append('fill solid noborder')
-        plt.set(title=f'"{self.desc}"',
+        plt.set(title=f'"{self.__desc}"',
                 ylabel=f'"count (min. {res[0]}, max. {res[1]})"',
                 y2label='"\\n\\n\\n\\n\\n\\n"',
-                xlabel=f'"value ({self.size()} unique)"',
+                xlabel=f'"value ({len(self)} unique)"',
                 xtics='rotate by -90 scale 0 nomirror',
                 grid='y',
                 style=style,

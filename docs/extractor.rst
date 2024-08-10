@@ -1,0 +1,4 @@
+extractor module
+================
+
+.. automodule:: extractor

@@ -19,6 +19,15 @@ def words():
 # pylint:disable=redefined-outer-name
 
 
+def test_members(checker):
+    res = str(checker)
+    assert '.dic' in res and ' ' in res and res.endswith('aff')
+    res = repr(checker)
+    assert 'entries=' in res and 'version=' in res
+    assert ' ' in checker.version()
+    assert len(checker) > 0
+
+
 def test_spelling(checker):
     assert checker.check('tafel') is True
     assert checker.check('tafle') is False
